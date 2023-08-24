@@ -1,0 +1,380 @@
+% CVPR 2022 Paper Template
+% based on the CVPR template provided by Ming-Ming Cheng (https://github.com/MCG-NKU/CVPR_Template)
+% modified and extended by Stefan Roth (stefan.roth@NOSPAMtu-darmstadt.de)
+
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+%%%%%%%%% PAPER TYPE  - PLEASE UPDATE FOR FINAL VERSION
+%\usepackage[review]{cvpr}      % To produce the REVIEW version
+%\usepackage{cvpr}              % To produce the CAMERA-READY version
+\usepackage[pagenumbers]{cvpr} % To force page numbers, e.g. for an arXiv version
+
+% Include other packages here, before hyperref.
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{lipsum}
+\usepackage{wrapfig}
+\usepackage{fdsymbol}
+\usepackage{siunitx}
+\usepackage{tablefootnote}
+\usepackage{float}
+\usepackage{dblfloatfix}
+
+\makeatletter
+\robustify\@latex@warning@no@line
+\makeatother
+
+\usepackage{authblk}
+\usepackage{svg}
+\usepackage[style=ieee]{biblatex}
+\addbibresource{kaust.bib}
+
+
+% It is strongly recommended to use hyperref, especially for the review version.
+% hyperref with option pagebackref eases the reviewers' job.
+% Please disable hyperref *only* if you encounter grave issues, e.g. with the
+% file validation for the camera-ready version.
+%
+% If you comment hyperref and then uncomment it, you should delete
+% ReviewTempalte.aux before re-running LaTeX.
+% (Or just hit 'q' on the first LaTeX run, let it finish, and you
+%  should be clear).
+%\usepackage[pagebackref,breaklinks,colorlinks]{hyperref}
+\usepackage[breaklinks,colorlinks]{hyperref}
+
+
+% Support for easy cross-referencing
+\usepackage[capitalize]{cleveref}
+\crefname{section}{Sec.}{Secs.}
+\Crefname{section}{Section}{Sections}
+\Crefname{table}{Table}{Tables}
+\crefname{table}{Tab.}{Tabs.}
+
+
+%%%%%%%%% PAPER ID  - PLEASE UPDATE
+\def\cvprPaperID{*****} % *** Enter the CVPR Paper ID here
+\def\confName{KAUST}
+\def\confYear{2023}
+
+
+\begin{document}
+
+%%%%%%%%% TITLE - PLEASE UPDATE
+%\title{\LaTeX\ Author Guidelines for \confName~Proceedings}
+\title{SABBAH: Seperated And Bi-modal Better Arabic Hate-Speech Model}
+
+% \author{Abdulmalik Madhi, Faisal, Mohammad Al-Shiekh, Wael Sulais\\
+% KAUST Academy\\
+% King Abdullah University of Science and Technology\\
+% {\tt\small firstauthor@i1.org}
+% % For a paper whose authors are all at the same institution,
+% % omit the following lines up until the closing ``}''.
+% % Additional authors and addresses can be added with ``\and'',
+% % just like the second author.
+% % To save space, use either the email address or home page, not both
+% }
+
+\author{Abdulmalik Al-Madhi}
+\author{Faisal Al-Harthi}
+\author{Mohammad Al-Shiekh}
+\author{Wael Sulais}
+\affil{KAUST Academy}
+\affil{\texttt{\string{202026200, 201950950, 201921310, 202032440\string}@kfupm.edu.sa}}
+
+\maketitle
+
+
+
+%%%%%%%%% ABSTRACT
+\begin{abstract}
+    
+With the exponential rise of LLMs, careful consideration should be given to the potential for their misuse in generating harmful content.
+We propose a novel system for detecting multi-modal Arabic hate speech and show its performance is competitive to existing solutions and present a new robust Arabic ASR solution that can handle Dialectal Arabic (DA) and overlapped speech
+\footnotetext{The code for this paper is hosted in \url{https://github.com/wsulais-kfupm/sabbah-ai}}.
+We used Adversarial Training on our hate speech classifier.
+Our fine-tuned ASR model achieves 36 WER on the novel SADA dataset and manages to handle dialectal 2-speaker conditions.
+\end{abstract}
+
+%%%%%%%%% BODY TEXT
+\section{Introduction}
+\label{sec:intro}
+
+The field of NLP has been on exponential rise recently due to the rise of Large Language Models (LLM) which have changed the landscape of modern AI.
+Consequently, the nascent field of Arabic NLP has started to gain traction with mega-projects like the NOOR Arabic LLM model \cite{lakimHolisticAssessmentCarbon2022}, or the recently announced Arabic LLM initiative in KAUST.
+
+However, this comes with a potential vector for abuse.
+That is, exploiting the biases learned by models to produce harmful content.
+Such concerns were realized when LLMs were exposed to the internet.
+A pertinent example of this was when Microsoft's Tay was announced, the model's outputs degenerated into hate speech within 24 hours of release \cite{wolfWhyWeShould2017}.
+The primary cause identified was malicious user inputs which disrupted the model's learned behaviour.
+This issue is systemic to LLMs, as they are trained on massive, unsupervised online corpora. 
+\cref{fig:llm-toxcity} shows that within 100 text prompts, LLMs were more likely to produce hateful content than not.
+This fact, coupled with the rising expectations from LLMs hampers the adoption of these systems.
+
+\begin{figure}[h]
+    \centering
+    \includesvg[pretex=\footnotesize, inkscapelatex=true, scale=0.9]{llm-toxcity.svg}
+    \caption{Model Toxicity vs. Text Generations \cite{gehmanRealToxicityPromptsEvaluatingNeural2020}}
+    \label{fig:llm-toxcity}
+\end{figure}
+
+The field of AI safety tackles the challenge of providing potential solutions to the above problems. 
+
+A prevalent example is OpenAI's ChatGPT safety filters, which attempt to prevent the model from producing harmful content.
+While these safety measures perform well in other languages, they do not perform well with Dialectal Arabic (DA).
+Should one direct ChatGPT 3.5 to generate offensive content in Modern Standard Arabic (MSA), Egyptian, Jordanian, and Hijazi dialects, the outcomes it generates would be less than optimal in the latter three. Nonetheless, its performance is deemed satisfactory when assigned the task of MSA generation.
+
+\subsection{Related Work}
+
+Several solutions have been proposed within the field of hate speech classification, even within the limited domain for Arabic. For example, \cite{shapiroAlexUAICArabicHate2022} proposed a system that could detect whether a sentence was \emph{offensive} and or \emph{hateful}.
+%\textcite{albadiAreTheyOur2018} have shown a system that detects religious hate speech targeting minority groups and identifies them.
+
+%Our work builds on the above and constructs the first adversarially resistant, multi-modal Arabic hate speech detection model to our knowledge.
+
+\begin{figure*}[ht]
+    \centering
+    \includesvg[inkscapelatex=false]{arch.svg}
+    \caption{Model Architecture of SABBAH. A multimodal system that seperates speakers within input audio files, transcribes their speeches, and classifies them. }
+    \label{fig:sabbah-arch}
+\end{figure*}
+
+\section{Architecture}
+
+As we are handling multiple modes of input,
+our system includes models to handle each input mode, that is audio and text. 
+The overall architecture of our solution is shown in \cref{fig:sabbah-arch}.
+The architecture takes in a mixture audio sample of a number of speakers talking over each other (2 in our demo), which then gets fed into the automatic speech recognition (ASR) model. The transcribed texts then get fed into the hate speech classifier.
+
+\subsection{Vocal Source Separation Model}
+\label{sec:vocal-sep}
+
+We evaluated a variety of architectures for vocal separation capabilities on Scale-invariant signal-to-noise (SI-SNR) ratio and on model run-time performance characteristics on the Libri2Mix dataset \cite{cosentinoLibriMixOpenSourceDataset2020}.
+SI-SNR measures the model's ability to reconstruct the source audio waveforms from the mixture while run-time performance refers to how heavy the model is to run at run-time.
+This includes metrics such as how fast is the model's inference, how many parameters it needs, etc. 
+
+We carefully considered two architectures, ConvTasNet \cite{luoConvTasNetSurpassingIdeal2019} and Mossformer \cite{zhaoMossFormerPushingPerformance2023}, for our vocal source separation model. ConvTasNet's fast inference speed and Mossformer's strong performance were standout features in our evaluation.
+
+\subsection{Automatic Speech Recognition Model}
+
+\begin{figure}[h]
+    \centering
+    \includesvg[pretex=\footnotesize, inkscapelatex=false]{asr-sidecar.svg}
+    \caption{Overall ASR architecture with the sidecar \cite{mengUnifiedModelingMultiTalker2023}}
+    \label{fig:asr-sidecar}
+\end{figure}
+
+We utilize the influential Whisper model~ \cite{radfordRobustSpeechRecognition2022}
+as our base ASR solution, then attempted to add a Conv-TasNet sidecar~\cite{luoConvTasNetSurpassingIdeal2019} after the third transformer layer as described in \cite{mengUnifiedModelingMultiTalker2023} to augment the model with speech diarisation capabilities.
+However, we could not replicate the results of the paper.
+
+\subsection{Hate Speech Classifier Model}
+\label{sec:hate-detector}
+We have chosen MarBERTv2 as our baseline model owing to its demonstrated superior performance in the classification of offensive and hateful speech, as evidenced in ~\cite{shapiroAlexUAICArabicHate2022}.
+
+
+We fine-tuned a MarBERTv2 model~\cite{abdul-mageedARBERTMARBERTDeep2021} on hate speech classification as in~\cite{shapiroAlexUAICArabicHate2022} using the arHateDataset~\cite{khezzarArHateDetectorDetectionHate2023} and implement adversarial training as done in~ \cite{xiangBuildRobustTextbased2022} to further enhance the model's robustness in face of adversarial attacks.
+
+\begin{figure}[h]
+    \centering
+    \includesvg[pretex=\footnotesize, inkscapelatex=false,scale=0.4]{adversial-training.svg}
+    \caption{Example of Adversarial Attacks on the Classifier}
+    \label{fig:adversarial-attack}
+\end{figure}
+
+Adversarial attacks exploit the learned behaviors of the model to generate examples that ``trick'' the model, they are tricky \emph{false-positives} for the model. 
+We employed TextAttack (TA)~\cite{morrisTextAttackFrameworkAdversarial2020} to generate adversarial examples for both training and testing.
+We perturb the input by using synonymous words from the model's embeddings to try to change its classification.
+We use a greedy search algorithm with a constraint disallowing the modification of words which have already been modified. See \cref{fig:adversarial-attack}.
+
+
+\section{Experimental Setup}
+\subsection{Datasets}
+    We used the following datasets:
+    \begin{itemize}
+        \item 
+            Libri2Mix \cite{cosentinoLibriMixOpenSourceDataset2020}
+        \item 
+            Saudi Audio Dataset for Arabic (SADA) \cite{alowisheqSADASaudiAudio2023}
+        \item 
+            arHateDataset~\cite{khezzarArHateDetectorDetectionHate2023} 
+    \end{itemize}
+\subsection{Data Processing}
+
+
+For the datasets used in the \cref{sec:hate-detector} we followed the data processing done in~\cite[][Sec. 3.2]{shapiroAlexUAICArabicHate2022} and~\cite{hegaziPreprocessingArabicText2021}. The dataset consists of 33741 samples, where 32\% are hateful and 68\% are non-hateful.
+The dataset was balanced through the removal of 53\% of non-hateful text. Additionally, all diacritics except shaddahs were eliminated, hamzas were normalized to alef, and stopwords as well as letters duplicated more than twice were removed~\cite{albadiAreTheyOur2018}. Subsequently, the dataset was partitioned into training (17,449 samples), validation (2,237 samples), and test (2,237 samples) subsets.
+
+For the datasets used in the \cref{sec:vocal-sep}, we extracted the audio segments in each audio file from SADA \cite{alowisheqSADASaudiAudio2023}.
+Then, we overlaid segments of the same length over each other to generate mixture audio files.
+We call this dataset \emph{Sada2Mix}.
+
+%\subsection{Bias And Adversarial Training}
+%The pre-trained checkpoint we used to fine-tune 
+
+\subsection{Training}
+
+All models were trained a NVIDIA V100 GPU with \qty{64}{\giga\byte} of RAM, using AdamW.
+
+\subsubsection{Vocal Separation Model}
+
+% We looked into a couple of architectures to train for the separator, the promising ones were the ConvTasNet for its inference speed and the Mossformer for its performance. We used the asteroid toolkit~\cite{parienteAsteroidPyTorchbasedAudio2020} to train the ConvTasNet on Libri2Mix and evaluating on SADA2Mix.
+% For the Mossformer, we used ModelScope to train it.
+To train the ConvTasNet architecture, we employed the Asteroid~\cite{parienteAsteroidPyTorchbasedAudio2020} toolkit, a versatile platform specifically designed for audio source separation tasks. The training was performed using the Libri2Mix dataset, which facilitated the development of the model's separation capabilities. To evaluate the model's performance, we utilized the SADA2Mix dataset, ensuring that our model's effectiveness extended beyond training data.
+
+For the Mossformer architecture, we leveraged the ModelScope toolkit, which provided a framework to train and evaluate models effectively. The training process aimed to harness the strengths of Mossformer in achieving optimal vocal source separation results. The choice to use ModelScope was guided by its capabilities in fine-tuning models to meet specific requirements.
+
+\subsubsection{Automatic Speech Recognition Model}
+
+Exploiting the zero-shot capabilities of WHISPER, 
+We trained a Whisper medium model 3000 epochs then evaluated the model on the SADA dataset.
+
+\subsubsection{Hate Speech Classifier Model}
+
+We fine-tuned a MarBERTv2 model using arHateDataset for three epochs, with AdamW as the optimizer, and a learning rate of \num{4e-5}.
+Then, generated 2500 adversarial examples for training and 1119 for testing to attack the fine-tuned model.
+Afterwards, we evaluated its robustness using Attack Success Rate (AS).
+
+We trained another MarBERTv2 model with both arHateDataset and the adversarial examples that succeeded in fooling our fine-tuned MarBERTv2 model. The training is done in the exact same manner as the fine-tuned MarBERTv2 model. After training, we evaluated the model's robustness.
+
+Then, we compared the results of both models. We will try and find out if adversarial training has any benefits on our model or not. 
+
+
+\section{Results}
+\subsection{Vocal Seperation Model}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{cccc}
+        \toprule
+        Model & SI-SNR & Size & Inference Time\\
+        \midrule
+        MossFormer (L) & 19.2 & \qty{42.1}{\mega} & \qty{12}{\second}\\
+        Conv-TasNet & 16.4 & \qty{5.1}{\mega}& \qty{6}{\second} \\
+        \bottomrule
+    \end{tabular}
+    \caption{Vocal Separator Results on Libri2Mix. Inference time refers to the time it takes to run inference on a \qty{30}{\second} audio mixture.}
+    \label{tab:Vocal-sep}
+\end{table}
+
+As a result of this training effort, we established a foundation for effective vocal source separation, which is vital for accurate multi-modal hate speech detection. Our evaluation criteria encompassed not only the separation quality but also the runtime performance of the models, ensuring that the final choice aligned with our overarching objectives.
+
+
+We finally choose the ConvTasNet model to integrate with the rest of the pipeline for its speed for the live demo.
+
+\subsection{Automatic Speech Recognition}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{ccc}
+        \toprule
+        Model & WER & CER \\
+        \midrule
+        whisper-medium & 60.3 & 29.4 \\ 
+        whisper-large-v2 & 50.6 & 26.5 \\
+        fine-tuned whisper-medium & 36.0 & 18.7 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Whisper Model Evaluation}
+    \label{tab:asr-results}
+\end{table}
+
+After fine-tuning, we evaluate the models on SADA using \emph{Word Error Rate} (WER) and \emph{Character Error Rate} (CER) to measure transcription performance.
+As shown in \cref{tab:asr-results}, performance of the pre-trained checkpoint before fine-tuning was reflective of how WHISPER was trained, mostly on FLEURS and CommonVoice for Arabic.
+After fine-tuning, the model outperforms both medium and large-v2.
+
+
+\subsection{Hate Speech Classifier Model}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{ccccc}
+        \toprule
+        Model & F1 Score & Precision & Recall & AS \\
+        \midrule 
+        Base & 49.3\% & 49.3\% & 49.3\% & 53.8\% \\
+        Fine-tuned & 92.8\% & 92.8\%& 92.8\%& 73.2\%\\
+        Adversarial & 92.5\% & 92.5\%& 92.5\%& 36.1\%\\
+        \bottomrule
+    \end{tabular}
+    \caption{Evaluation of Hate Speech Classifiers}
+    \label{tab:hs-eval}
+\end{table}
+
+ Our observations in \cref{tab:hs-eval} demonstrate that the fine-Tuned and adversarially trained MarBERTv2 models exhibit superior results in predicting hateful speech compared to the Base Model (BM) MarBERTv2. When the F1 scores of the AT and FT models are compared, it is evident that their scores differ within a 0.5\% margin of error. However, we can see the difference in their robustness. The AS score of the AT model is 37.1\% lower than the FT model. This shows that using adversarial training does not hinder the model's performance in other tasks. However, it improves the model's resilience against adversarial attacks.
+
+
+%------------------------------------------------------------------------
+\section{Conclusions}
+
+This paper introduces an innovative system for detecting and countering hate speech in Arabic content. By combining vocal separation, speech recognition, and an adversarially trained hate speech classifier model, the system demonstrates a robust approach to addressing hate speech.
+
+Results from extensive evaluations on diverse datasets validate the system's efficiency in detecting hate speech across various communication modes and dialects. The integration of adversarial training notably enhances the model's resistance to adversarial attacks, showcasing its potential for real-world applications.
+
+In conclusion, this paper offers a promising solution to the challenge of mitigating hate speech in Arabic language content, contributing to the responsible and effective use of language models in AI applications.
+
+\section{Limitations and Future Work}
+
+We have proposed a bi-modal hate speech detector in this paper, mostly in the form of audio speech and text.
+A potential extension on this front would be to add more modes of detection, such as image~\cite{heeDecodingUnderlyingMeaning2023} and video and the composite of these modes for AI use cases such as CLIP \cite{quUnsafeDiffusionGeneration2023}.
+
+\subsection{Automatic Speech Recognition}
+
+While the task at hand would benefit from having real-time transcriptions with low latency,
+the current model cannot perform transcription in less than $\qty{30}{\second}$. Thus, employing a LocalAgreement algorithm such as in \cite{machacekTurningWhisperRealTime2023} would help improve latency.
+
+\begin{wraptable}{r}{0pt}
+    %\centering
+    \begin{tabular}{cr}
+        \toprule
+        Dialect & Count \\
+        \midrule
+        Najdi & 94611 \\
+        Hijazi & 36170 \\
+        Unknown & 30867 \\
+        Khaliji & 30320 \\
+        MSA & 4302 \\
+        Egyptian & 2172 \\
+        Levantine & 966 \\
+        Yemeni & 407 \\
+        Shamali & 146 \\
+        Janubi & 103 \\
+        Maghrebi & 41 \\
+        Iraqi & 2 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Dialect Distribution in SADA}
+    \label{tab:dialect-dist}
+\end{wraptable}
+
+
+
+Furthermore, the model needs to be robust on Dialectal Arabic (DA) which
+was attempted by fine-tuning the model on SADA~\cite{alowisheqSADASaudiAudio2023}. However, as seen in \cref{tab:dialect-dist}, the dataset is skewed in the number and variation of DA.
+This could be remedied by supplementing the dataset with other DA speech datasets.
+    
+
+\subsection{Hate Speech Detection Model}
+
+As for the hate speech detection model, we have done some preliminary adversarial training. However, we can deploy more advanced Adversarial NLP techniques such as the ones in \cite{pereiraALICEAdversarialTraining} or \cite{hartvigsenToxiGenLargeScaleMachineGenerated2022}.
+
+Another potential improvement would be to make the model multi-class. That is, the model would \emph{not only} detect whether the text was hateful, but also \emph{which type} of hate speech was detected (e.g. Racial, Religious, Gender, etc.)
+
+Furthermore, it would be desirable to have the model be interpretable. Yet, \cite{sabirInterpretabilityTransparencyDrivenDetection2023} shows that with more model interpretability, the more the model is susceptible to adversarial attacks. 
+Thus, a potential avenue for future improvement would be to replicate the paper's results on our model.
+
+\section{Ethical Consideration}
+
+By the very nature of the Arabic language, the field of Arabic NLP has to deal with influential religious texts such as the Quran. 
+However, such texts require nuanced classifications: taking into consideration the sentence's context, audience, and when it was written.
+Human reviewers have raised concerns on the potential misuse of the solutions provided. As such, the authors of this paper do not recommend using their proposed model in sensitive contexts such as social media moderation \emph{by itself}. Careful review of the model's output or perhaps augmenting the model with auxiliary systems should be considered in such contexts.
+
+\section{Acknowledgements}
+
+We would like to thank KAUST Academy for allowing us to pursue this research, KAUST for giving us access to their HPC cluster which allowed us to train such models
+
+%%%%%%%%% REFERENCES
+\printbibliography{}
+
+\end{document}

@@ -1,0 +1,3 @@
+[submodule "HSC-Code/Data/arabert"]
+	path = HSC-Code/Data/arabert
+	url = https://github.com/aub-mind/arabert.git

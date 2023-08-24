@@ -1,0 +1,66 @@
+2023-08-23 15:36:57,302 - modelscope - INFO - PyTorch version 2.0.1 Found.
+2023-08-23 15:36:57,303 - modelscope - INFO - Loading ast index from /home/shiekhmf/.cache/modelscope/ast_indexer
+2023-08-23 15:36:58,090 - modelscope - INFO - Loading done! Current index file version is 1.8.3, with md5 632a4747f7792737ef46f5a618dde093 and a total number of 895 components indexed
+2023-08-23 15:37:01,970 - modelscope - INFO - No subset_name specified, defaulting to the default
+2023-08-23 15:37:09,502 - modelscope - WARNING - Reusing dataset libri2_mix_8k (/home/shiekhmf/.cache/modelscope/hub/datasets/modelscope/Libri2Mix_8k/master/data_files)
+2023-08-23 15:37:09,503 - modelscope - INFO - Generating dataset libri2_mix_8k (/home/shiekhmf/.cache/modelscope/hub/datasets/modelscope/Libri2Mix_8k/master/data_files)
+2023-08-23 15:37:09,503 - modelscope - INFO - Reusing cached meta-data file: /home/shiekhmf/.cache/modelscope/hub/datasets/modelscope/Libri2Mix_8k/master/data_files/0b2667b3dd51f9960174a0bc9d4d8266
+Downloading data files:   0%|          | 0/1 [00:00<?, ?it/s]Downloading data files: 100%|██████████| 1/1 [00:02<00:00,  2.88s/it]Downloading data files: 100%|██████████| 1/1 [00:02<00:00,  2.88s/it]
+Computing checksums: 100%|██████████| 1/1 [01:20<00:00, 80.16s/it]Computing checksums: 100%|██████████| 1/1 [01:20<00:00, 80.16s/it]
+Extracting data files:   0%|          | 0/1 [00:00<?, ?it/s]Extracting data files: 100%|██████████| 1/1 [00:00<00:00, 132.01it/s]
+torchvision is not available - cannot save figures
+2023-08-23 15:38:35,823 - modelscope - INFO - No subset_name specified, defaulting to the default
+2023-08-23 15:38:38,579 - modelscope - WARNING - Reusing dataset libri2_mix_8k (/home/shiekhmf/.cache/modelscope/hub/datasets/modelscope/Libri2Mix_8k/master/data_files)
+2023-08-23 15:38:38,579 - modelscope - INFO - Generating dataset libri2_mix_8k (/home/shiekhmf/.cache/modelscope/hub/datasets/modelscope/Libri2Mix_8k/master/data_files)
+2023-08-23 15:38:38,580 - modelscope - INFO - Reusing cached meta-data file: /home/shiekhmf/.cache/modelscope/hub/datasets/modelscope/Libri2Mix_8k/master/data_files/ca1fa0817f177352fec699264d6e0722
+Downloading data files:   0%|          | 0/1 [00:00<?, ?it/s]Downloading data files: 100%|██████████| 1/1 [00:02<00:00,  2.19s/it]Downloading data files: 100%|██████████| 1/1 [00:02<00:00,  2.19s/it]
+Computing checksums: 100%|██████████| 1/1 [00:08<00:00,  8.35s/it]Computing checksums: 100%|██████████| 1/1 [00:08<00:00,  8.35s/it]
+Extracting data files:   0%|          | 0/1 [00:00<?, ?it/s]Extracting data files: 100%|██████████| 1/1 [00:00<00:00, 569.57it/s]
+2023-08-23 15:38:54,441 - modelscope - INFO - Model revision not specified, use the latest revision: v1.1.3
+Downloading:   0%|          | 0.00/571 [00:00<?, ?B/s]Downloading: 100%|██████████| 571/571 [00:00<00:00, 2.16MB/s]
+2023-08-23 15:38:58,671 - modelscope - INFO - Model revision not specified, use the latest revision: v1.1.3
+Downloading:   0%|          | 0.00/289 [00:00<?, ?B/s]Downloading: 100%|██████████| 289/289 [00:00<00:00, 1.99MB/s]
+Downloading:   0%|          | 0.00/482M [00:00<?, ?B/s]Downloading:   3%|▎         | 16.0M/482M [00:04<02:22, 3.44MB/s]Downloading:   5%|▍         | 23.9M/482M [00:06<01:54, 4.19MB/s]Downloading:   8%|▊         | 39.9M/482M [00:06<00:59, 7.80MB/s]Downloading:  12%|█▏        | 55.9M/482M [00:07<00:34, 13.1MB/s]Downloading:  15%|█▍        | 71.9M/482M [00:08<00:35, 12.1MB/s]Downloading:  18%|█▊        | 87.9M/482M [00:10<00:34, 11.9MB/s]Downloading:  22%|██▏       | 104M/482M [00:10<00:24, 16.4MB/s] Downloading:  25%|██▍       | 120M/482M [00:11<00:24, 15.4MB/s]Downloading:  28%|██▊       | 136M/482M [00:12<00:21, 17.2MB/s]Downloading:  32%|███▏      | 152M/482M [00:13<00:20, 16.8MB/s]Downloading:  35%|███▍      | 168M/482M [00:13<00:17, 18.7MB/s]Downloading:  38%|███▊      | 184M/482M [00:15<00:21, 14.5MB/s]Downloading:  41%|████▏     | 200M/482M [00:16<00:20, 14.8MB/s]Downloading:  45%|████▍     | 216M/482M [00:17<00:17, 16.1MB/s]Downloading:  48%|████▊     | 232M/482M [00:19<00:19, 13.4MB/s]Downloading:  51%|█████▏    | 248M/482M [00:20<00:15, 15.4MB/s]Downloading:  55%|█████▍    | 264M/482M [00:20<00:10, 21.1MB/s]Downloading:  58%|█████▊    | 278M/482M [00:21<00:10, 20.1MB/s]Downloading:  61%|██████    | 294M/482M [00:23<00:15, 12.9MB/s]Downloading:  64%|██████▍   | 310M/482M [00:26<00:19, 9.19MB/s]Downloading:  68%|██████▊   | 326M/482M [00:27<00:14, 11.0MB/s]Downloading:  71%|███████   | 342M/482M [00:29<00:14, 10.1MB/s]Downloading:  74%|███████▍  | 358M/482M [00:31<00:13, 9.44MB/s]Downloading:  78%|███████▊  | 374M/482M [00:31<00:09, 12.6MB/s]Downloading:  80%|████████  | 388M/482M [00:33<00:09, 10.2MB/s]Downloading:  84%|████████▍ | 404M/482M [00:36<00:10, 8.04MB/s]Downloading:  87%|████████▋ | 420M/482M [00:43<00:13, 4.84MB/s]Downloading:  90%|█████████ | 436M/482M [00:50<00:13, 3.70MB/s]Downloading:  94%|█████████▍| 452M/482M [00:57<00:10, 3.08MB/s]Downloading:  97%|█████████▋| 468M/482M [01:04<00:05, 2.84MB/s]Downloading: 100%|██████████| 482M/482M [01:09<00:00, 2.94MB/s]Downloading: 100%|██████████| 482M/482M [01:09<00:00, 7.26MB/s]
+Downloading:   0%|          | 0.00/11.3k [00:00<?, ?B/s]Downloading: 100%|██████████| 11.3k/11.3k [00:00<00:00, 81.5MB/s]
+2023-08-23 15:40:18,594 - modelscope - INFO - Model revision not specified, use the latest revision: v1.1.3
+2023-08-23 15:40:19,163 - modelscope - INFO - initialize model from /home/shiekhmf/.cache/modelscope/hub/damo/speech_mossformer_separation_temporal_8k
+2023-08-23 15:40:19,163 - modelscope - WARNING - ('MODELS', 'speech-separation', 'speech-separation') not found in ast index file
+Traceback (most recent call last):
+  File "/home/shiekhmf/miniconda3/lib/python3.11/site-packages/modelscope/models/builder.py", line 35, in build_model
+    model = build_from_cfg(
+            ^^^^^^^^^^^^^^^
+  File "/home/shiekhmf/miniconda3/lib/python3.11/site-packages/modelscope/utils/registry.py", line 198, in build_from_cfg
+    raise KeyError(
+KeyError: 'speech-separation is not in the models registry group speech-separation. Please make sure the correct version of ModelScope library is used.'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/shiekhmf/miniconda3/lib/python3.11/site-packages/modelscope/utils/registry.py", line 212, in build_from_cfg
+    return obj_cls(**args)
+           ^^^^^^^^^^^^^^^
+  File "/home/shiekhmf/miniconda3/lib/python3.11/site-packages/modelscope/trainers/audio/separation_trainer.py", line 67, in __init__
+    self.model = self.build_model()
+                 ^^^^^^^^^^^^^^^^^^
+  File "/home/shiekhmf/miniconda3/lib/python3.11/site-packages/modelscope/trainers/audio/separation_trainer.py", line 148, in build_model
+    model = Model.from_pretrained(
+            ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/shiekhmf/miniconda3/lib/python3.11/site-packages/modelscope/models/base/base_model.py", line 151, in from_pretrained
+    model = build_model(model_cfg, task_name=task_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/shiekhmf/miniconda3/lib/python3.11/site-packages/modelscope/models/builder.py", line 43, in build_model
+    raise KeyError(e)
+KeyError: KeyError('speech-separation is not in the models registry group speech-separation. Please make sure the correct version of ModelScope library is used.')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/ibex/user/shiekhmf/MossFormer/./Libri2Mix_8k_train.py", line 45, in <module>
+    trainer = build_trainer(
+              ^^^^^^^^^^^^^^
+  File "/home/shiekhmf/miniconda3/lib/python3.11/site-packages/modelscope/trainers/builder.py", line 39, in build_trainer
+    return build_from_cfg(cfg, TRAINERS, default_args=default_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/shiekhmf/miniconda3/lib/python3.11/site-packages/modelscope/utils/registry.py", line 215, in build_from_cfg
+    raise type(e)(f'{obj_cls.__name__}: {e}')
+KeyError: "SeparationTrainer: KeyError('speech-separation is not in the models registry group speech-separation. Please make sure the correct version of ModelScope library is used.')"
